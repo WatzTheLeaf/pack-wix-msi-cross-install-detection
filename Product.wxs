@@ -1,0 +1,58 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"> <?if $(var.MsiType) = "A" ?>
+    <?define ProductId      = "11111111-1111-1111-1111-111111111111" ?>
+    <?define ProductName    = "AppMsiTest-FolderA" ?>
+    <?define LevelFolderA   = "1" ?>
+    <?define LevelFolderB   = "1000" ?>
+  <?else?>
+    <?define ProductId      = "22222222-2222-2222-2222-222222222222" ?>
+    <?define ProductName    = "AppMsiTest-FolderB" ?>
+    <?define LevelFolderA   = "1000" ?>
+    <?define LevelFolderB   = "1" ?>
+  <?endif?>
+  
+  <Package Name="$(var.ProductName)" Manufacturer="VotreEntreprise" Version="1.0.0" UpgradeCode="12345678-1234-1234-1234-1234567890AB" Scope="perMachine">
+    
+    <MajorUpgrade DowngradeErrorMessage="Downgrade non autorisé." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <ui:WixUI Id="WixUI_Minimal" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="AppMsiTest">
+        <Directory Id="DataDir" Name="Data">
+           <Directory Id="FolderADir" Name="FolderA" />
+           <Directory Id="FolderBDir" Name="FolderB" />
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="App" Title="Core App" Level="1">
+       <Component Directory="INSTALLFOLDER">
+	        <File Source="bin/AppMsiTest.exe" />
+       </Component>
+    </Feature>
+
+    <Feature Id="Feat_FolderA" Title="Folder A" Level="$(var.LevelFolderA)">
+       <ComponentGroupRef Id="Grp_FolderA" />
+    </Feature>
+
+    <Feature Id="Feat_FolderB" Title="Folder B" Level="$(var.LevelFolderB)">
+       <ComponentGroupRef Id="Grp_FolderB" />
+    </Feature>
+
+  </Package>
+
+  <Fragment>
+    <ComponentGroup Id="Grp_FolderA" Directory="FolderADir">
+      <Files Include="Data/FolderA/**" /> 
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Grp_FolderB" Directory="FolderBDir">
+      <Files Include="Data/FolderB/**" />
+    </ComponentGroup>
+  </Fragment>
+
+</Wix>
