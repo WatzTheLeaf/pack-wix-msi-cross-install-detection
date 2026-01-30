@@ -5,8 +5,23 @@
 
 using namespace std;
 
+namespace fs = std::filesystem;
+
 int main()
 {
-	cout << "Hello CMake." << endl;
-	return 0;
+    std::string filePathA = "./Data/FolderA/A-install.flag";
+    std::string filePathB = "./Data/FolderB/B-install.flag";
+
+    std::cout << "Hello World !" << std::endl;
+
+    // Vérifier si le fichier existe
+    if (fs::exists(filePathA)) {
+        std::cout << "A type installation detected !" << std::endl;
+    }
+
+    if (fs::exists(filePathB)) {
+        std::cout << "B type installation detected !" << std::endl;
+    }
+
+    return 0;
 }

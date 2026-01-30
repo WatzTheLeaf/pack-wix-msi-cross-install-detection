@@ -14,8 +14,8 @@ Write-Host "--- 1. Cleaning and Configuring CMake ---" -ForegroundColor Cyan
 if (Test-Path $BuildDir) { Remove-Item $BuildDir -Recurse -Force }
 if (Test-Path $StageDir) { Remove-Item $StageDir -Recurse -Force }
 
-# Configure (Generates Ninja or VS project files)
-cmake -S "$PSScriptRoot" -B "$BuildDir" -DCMAKE_BUILD_TYPE=$BuildType
+# Configure (Generates Ninja)
+cmake -S "$PSScriptRoot" -B "$BuildDir" -G "Ninja" -DCMAKE_BUILD_TYPE="$BuildType"
 
 Write-Host "`n--- 2. Building ---" -ForegroundColor Cyan
 cmake --build "$BuildDir" --config $BuildType
